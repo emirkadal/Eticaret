@@ -1,0 +1,54 @@
+﻿@model Product
+<style>
+    .product-card {
+        transition: transform 0.4s ease-in-out;
+    }
+
+        .product-card:hover {
+            transform: scale(1.1);
+        }
+
+</style>
+<div class="product-card mb-5">
+    <div class="card h-100">
+        <!-- Sale badge-->
+        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem;">
+            İndirim
+        </div>
+        <div class="badge position-absolute">
+            <form asp-action="Add" asp-controller="Favorites">
+                <input type="hidden" name="ProductId" value="@Model.Id"/>
+                <button class="btn btn-light" style="box-shadow:none;float:left;width:45px">
+                    <i class="bi-heart">
+
+                    </i>
+                </button>
+            </form>
+        </div>
+        <!-- Product image-->
+        <a href="/Products/Details/@Model.Id">
+            <img class="card-img-top" src="~/Img/Products/@Model.Image" alt="@Model.Name">
+        </a>
+        <!-- Product details-->
+        <div class="card-body p-4">
+            <div class="text-center">
+                <!-- Product name-->
+                <h5 class="fw-bolder">@Model.Name</h5>
+                <!-- Product price-->
+                <span class="text-muted text-decoration-line-through">@(Model.Price + 1000)</span>
+                @Model.Price.ToString("c")
+                <div class="text-muted small mb-1 mt-1">Stok: @Model.Stock Adet </div>
+            </div>
+        </div>
+        <!-- Product actions-->
+        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <form action="/Cart/Add" method="post">
+                <input type="hidden" name="ProductId" value="@Model.Id" />
+                <div class="text-center"><button class="btn btn-outline-dark mt-auto" type="submit">
+                        <i class="bi-cart-fill me-1"></i> Sepete Ekle
+                    </button>
+                </div>
+                </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model News
+<style>
+    .product-card {
+        transition: transform 0.4s ease-in-out;
+    }
+
+        .product-card:hover {
+            transform: scale(1.1);
+        }
+
+</style>
+
+<div class="product-card col mb-4 mt-2">
+    <a href="/News/Details/@Model.Id">
+        <img src="/Img/@Model.Image" alt="@Model.Name" class="img-fluid"/>
+    </a>
+
+</div>

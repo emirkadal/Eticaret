@@ -1,0 +1,48 @@
+﻿@model Eticaret.Core.Entities.Address
+
+@{
+    ViewData["Title"] = "Adres Ekle";
+}
+
+<h1>Adres Ekle</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="District" class="control-label"></label>
+                <input asp-for="District" class="form-control" />
+                <span asp-validation-for="District" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpenAddress" class="control-label"></label>
+                <textarea asp-for="OpenAddress" class="form-control"></textarea>
+                <span asp-validation-for="OpenAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsBillingAdress" /> @Html.DisplayNameFor(model => model.IsBillingAdress)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDeliveryAdress" /> @Html.DisplayNameFor(model => model.IsDeliveryAdress)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Adres Ekle" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

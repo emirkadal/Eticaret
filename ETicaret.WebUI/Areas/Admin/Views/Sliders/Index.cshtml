@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Slider>
+
+@{
+    ViewData["Title"] = "Slider";
+}
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary"><i class="fa-solid fa-plus"></i>Slider Ekle</a>
+</p>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Link)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                    <a href="/Img/Slider/@item.Image"><img src="/Img/Slider/@item.Image" height="70" /></a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Link)
+            </td>
+            <td>
+           <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i> Düzenle</a>
+           <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-warning"><i class="fa-solid fa-magnifying-glass"></i> Detay</a>
+           <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i> Sil</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

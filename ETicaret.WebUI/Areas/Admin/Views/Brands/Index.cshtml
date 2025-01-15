@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Brand>
+
+@{
+    ViewData["Title"] = "Markalar";
+}
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary"><i class="fa-solid fa-plus"></i> Yeni Marka Ekle</a>
+</p>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+               @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Logo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                 <b>@Html.DisplayFor(modelItem => item.Name)</b>
+            </td>
+            <td>
+                <img src="/Img/@Html.DisplayFor(modelItem => item.Logo)" height="30"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderNo)
+            </td>
+            <td>
+                @item.CreateDate.ToShortDateString()
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class ="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i> Düzenle</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-warning"><i class="fa-solid fa-magnifying-glass"></i> Detay</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i> Sil</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,43 @@
+﻿@model UserEditViewModel
+
+@{
+    ViewData["Title"] = "Hesabım";
+}
+<div class="row">
+    <div class="col-md-4">
+        <b><h3>Hesap Bilgilerim</h3></b>
+        <hr />
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <b> <label asp-for="Name" class="control-label"></label></b>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <b><label asp-for="SurName" class="control-label"></label></b>
+                <input asp-for="SurName" class="form-control" />
+                <span asp-validation-for="SurName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <b><label asp-for="Email" class="control-label"></label></b>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <b><label asp-for="Phone" class="control-label"></label></b>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            <div class="form-group">
+                <b><label asp-for="Password" class="control-label"></label></b>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Kaydet" class="btn btn-primary my-2" />
+            </div>
+        </form>
+    </div>
+</div>

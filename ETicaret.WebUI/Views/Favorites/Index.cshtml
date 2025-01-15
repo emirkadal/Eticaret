@@ -1,0 +1,64 @@
+﻿@model List<Product>
+
+@{
+    ViewData["Title"] = "Favorilerim";
+}
+
+<section class="container my-5">
+    <div class="text-center">
+        <h1 class="display-4">
+            <b>Favorilerim</b>
+        </h1>
+    </div>
+    <div class="row mt-4" style="margin-bottom:250px">
+        <div class="col-md-10">
+            <div class="table-responsive">
+                   @if (Model.Any())
+                        {
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th></th>
+                        <th>Ürün Adı</th>
+                        <th>Fiyat</th>
+                        <th></th>
+                    </tr>
+                    <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="/Img/Products/@item.Image" height="37"/>
+                                    </td>
+                                    <td>
+                                        <a class="nav-link text-dark" href="/Products/Details/@item.Id">
+                                            @item.Name
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @item.Price.ToString("c")
+                                    </td>
+                                    <td>
+                                        <form asp-action ="Remove" asp-controller="Favorites">
+                                            <input type="hidden" name="ProductId" value="@item.Id"/>
+                                            <button class="btn btn-sm btn-danger" type="submit" >
+                                                <i class="bi bi-x-lg "></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                    </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="container">
+                        <div class="alert alert-dark my-3 text-center" style="margin-left:200px">
+                            <h3>Favorilerinizde ürün bulunmamaktadır.</h3>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

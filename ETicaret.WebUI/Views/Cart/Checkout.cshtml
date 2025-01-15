@@ -1,0 +1,215 @@
+﻿@model CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Satın Al";
+}
+<section class="container mt-5" style="margin-bottom:250px">
+    <div class="text-center">
+        <h1 class="display-4">
+            <b>Satın Al</b>
+        </h1>
+    </div>
+        @if (Model.CartProducts.Any())
+        {
+        <div class="row mt-4">
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th></th>
+                            <th>Ürün Adı</th>
+                            <th>Fiyat</th>
+                            <th>Adet</th>
+                            <th>Toplam Tutar</th>
+                            
+                        </tr>
+
+                        <tbody>
+                            @foreach (var item in Model.CartProducts)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="/Img/Products/@item.Product.Image" height="37" />
+                                    </td>
+                                    <td>
+                                        <a class="nav-link text-dark" href="/Products/Details/@item.Product.Id">
+                                            @item.Product.Name
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @item.Product.Price.ToString("c")
+                                    </td>
+                                    <td>
+                                        @item.Quantity
+                                    </td>
+                                    <td>
+                                        @((item.Quantity * item.Product.Price).ToString("c"))
+                                    </td>
+                                   
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <h4><b>Sipariş Özeti</b></h4>
+                    <hr />
+                </div>
+                <table class="table">
+                    <tr>
+                        <td><b>Ürün Toplamı</b></td>
+                        <td>@Model.TotalPrice.ToString("c")</td>
+                    </tr>
+                    <tr>
+                        <td><b>Kargo Ücreti</b></td>
+                        <td>
+                            @(Model.TotalPrice > 999 ? "Ücretsiz" : Model.CartProducts.Any() ? "₺49" : "₺0")
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Sipariş Toplamı</th>
+                        <td>
+                            <b>@(Model.TotalPrice > 999 ? Model.TotalPrice.ToString("c") : (Model.CartProducts.Any() ? (Model.TotalPrice + 49).ToString("c") : Model.TotalPrice.ToString("c")))</b>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <hr />
+            if (Model.Addresses is null)
+            {
+            <div class="alert alert-secondary my-5">
+                <h5 class="text-danger">
+                    Kayıtlı Adresiniz Bulunmamaktadır.
+                </h5>
+                <h6>
+                    Sipariş verebilmek için en az 1 adres eklemelisiniz.
+                </h6>
+                <a href="/MyAddresses/Create" class="btn btn-outline-success">
+                    <i class="bi-person-plus me-1"></i> Adres Ekle
+                </a>
+            </div>
+            }
+            else
+           {
+            <form asp-action="Checkout">
+                <div class="my-2">
+                    <h3><b>Teslimat Adresi</b></h3>
+                    <div class="row row-cols-3">
+                        @foreach (var item in Model.Addresses)
+                        {
+                           <div class="col">
+                               <div class="card">
+                                    <div class="card-header">
+                                        <div class="form-check">
+                                             <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="DeliveryAddress" value="@item.AddressGuid" @(item.IsDeliveryAdress ? "checked" : "") />
+                                                <b>@item.City</b>
+                                             </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <p>
+                                            @item.OpenAddress @item.District @item.City
+                                        </p>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="BillingAddress" value="@item.AddressGuid" @(item.IsBillingAdress ? "checked" : "") />
+                                                Fatura Adresi
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+           
+                    </div>
+                </div>
+                <form method="post" action="@Url.Action("Checkout", "Cart")">
+                    <div class="my-5">
+                        <h2>Ödeme Seçenekleri</h2>
+                        <hr />
+                        <h3>Kart İle Öde</h3>
+                        <h6>Banka veya Kredi Kartı Kullanarak Ödeme Yapabilirsiniz.</h6>
+                        <h6>Kart Bilgileri</h6>
+
+                        <!-- Kart Numarası -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="CardNumber">Kart Numarası</label>
+                                <input type="text" name="CardNumber" id="CardNumber" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <!-- Son Kullanma Tarihi -->
+                        <div class="row">
+                            <label>Son Kullanma Tarihi</label>
+                            <div class="col-md-2">
+                                <select class="form-select" name="CardMonth" required>
+                                    <option disabled value="">Ay</option>
+                                    <option value="1">01</option>
+                                    <option value="2">02</option>
+                                    <option value="3">03</option>
+                                    <option value="4">04</option>
+                                    <option value="5">05</option>
+                                    <option value="6">06</option>
+                                    <option value="7">07</option>
+                                    <option value="8">08</option>
+                                    <option value="9">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select" name="CardYear" required>
+                                    <option disabled value="">Yıl</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                    <option value="2029">2029</option>
+                                    <option value="2030">2030</option>
+                                    <option value="2031">2031</option>
+                                    <option value="2032">2032</option>
+                                    <option value="2033">2033</option>
+                                    <option value="2034">2034</option>
+                                    <option value="2035">2035</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- CVV -->
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="CVV">CVV</label>
+                                <input type="text" name="CVV" id="CVV" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <!-- Adresler: Bu adresleri form içinde gizli olarak veya kullanıcıdan almak için eklemelisiniz -->
+                        <input type="hidden" name="DeliveryAddress" value="delivery_address_id" />
+                        <input type="hidden" name="BillingAddress" value="billing_address_id" />
+
+                        <!-- Ödeme Butonu -->
+                        <button type="submit" class="btn btn-success mt-2">Ödeme Yap</button>
+                    </div>
+                </form>
+
+            </form>
+           }
+        }
+        else
+        {
+            <div class="container">
+                <div class="alert alert-dark my-3 text-center" style="margin-left:100px">
+                    <h3>Sepetinizde Ürün Bulunmamaktadır.</h3>
+                </div>
+            </div>
+        }
+</section>
