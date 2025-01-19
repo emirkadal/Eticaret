@@ -4,7 +4,7 @@
     ViewData["Title"] = "Anasayfa";
 }
 
-<partial name="_Slider" model="Model.Sliders"/>
+<partial name="_Slider" model="Model.Sliders" />
 
 @if (Model.Products is not null && Model.Products.Count > 0)
 {
@@ -15,18 +15,33 @@
             </b>
             <hr />
         </h1>
-        <div class="row row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center mt-4">
-            @foreach (var item in Model.Products)
+
+        <!-- Sıralama Dropdown Menüsü -->
+        <div class="d-flex justify-content-end mb-3">
+            <select id="sortOptions" class="form-select w-auto" onchange="sortProducts()">
+                <option value="default">Varsayılan</option>
+                <option value="asc">Fiyata Göre Artan</option>
+                <option value="desc">Fiyata Göre Azalan</option>
+            </select>
+        </div>
+
+        <!-- Ürünler -->
+        <div id="productContainer" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center mt-4">
+            @for (int i = 0; i < Model.Products.Count; i++)
             {
-                <partial name="_ProductView" model="item" />
+                var item = Model.Products[i];
+                <div class="col mb-5" data-price="@item.Price" data-index="@i">
+                    <partial name="_ProductView" model="item" />
+                </div>
             }
         </div>
     </div>
 }
+
 @if (Model.News is not null && Model.News.Count > 0)
 {
     <div class="my-5">
-        <h1 class=" text-center">Kampanyalar</h1>
+        <h1 class="text-center">Kampanyalar</h1>
         <hr />
         <div class="row gx-4 gx-lg-5 row-cols-2 justify-content-center">
             @foreach (var item in Model.News)
@@ -35,4 +50,28 @@
             }
         </div>
     </div>
+}
+
+@section Scripts {
+    <script>
+        function sortProducts() {
+            const sortOption = document.getElementById('sortOptions').value;
+            const productContainer = document.getElementById('productContainer');
+            const products = Array.from(productContainer.children); // Ürün öğelerini al
+
+            // Sıralama işlemi
+            if (sortOption === 'asc') {
+                products.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+            } else if (sortOption === 'desc') {
+                products.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+            } else {
+                // Varsayılan sıralama
+                products.sort((a, b) => parseInt(a.dataset.index) - parseInt(b.dataset.index));
+            }
+
+            // Yeni sıralamayı DOM'a uygula
+            productContainer.innerHTML = '';
+            products.forEach(product => productContainer.appendChild(product));
+        }
+    </script>
 }

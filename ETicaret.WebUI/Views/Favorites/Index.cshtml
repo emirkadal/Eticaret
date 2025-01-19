@@ -3,7 +3,32 @@
 @{
     ViewData["Title"] = "Favorilerim";
 }
+<style>
+   /* Özel Alert Kutusu */
+.alert-custom {
+    background-color: #000; /* Siyah arka plan */
+    color: #fff; /* Beyaz metin */
+    border: 2px solid #fff; /* Beyaz sınır */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
+    max-width: 600px;
+    margin: 50px auto; /* Yalnızca yatayda ortalamak için */
+    margin-left:320px;
+    font-weight: 600; /* Orta kalınlıkta metin */
+}
 
+.alert-custom h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0;
+}
+
+.alert-custom:hover {
+    transform: scale(1.05); /* Hoverda büyüme efekti */
+    transition: transform 0.3s ease;
+}
+
+</style>
 <section class="container my-5">
     <div class="text-center">
         <h1 class="display-4">
@@ -53,10 +78,11 @@
                 else
                 {
                     <div class="container">
-                        <div class="alert alert-dark my-3 text-center" style="margin-left:200px">
+                        <div class="alert alert-custom text-center">
                             <h3>Favorilerinizde ürün bulunmamaktadır.</h3>
                         </div>
                     </div>
+
                 }
             </div>
         </div>

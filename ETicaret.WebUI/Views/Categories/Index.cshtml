@@ -1,14 +1,46 @@
-﻿ @model Category
+﻿@model Category
 @{
     ViewData["Title"] = Model.Name;
-
 }
 <div class="my-2">
     <h1 class="text-center">@Model.Name</h1>
-    <div class="row row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center mt-4">
-        @foreach (var item in Model.Products)
+    <!-- Sıralama Dropdown Menüsü -->
+    <div class="d-flex justify-content-end mb-3">
+        <select id="sortOptions" class="form-select w-auto" onchange="sortProducts()">
+            <option value="default">Varsayılan</option>
+            <option value="asc">Fiyata Göre Artan</option>
+            <option value="desc">Fiyata Göre Azalan</option>
+        </select>
+    </div>
+    <div id="productContainer" class="row row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center mt-4">
+        @foreach (var item in Model.Products.Select((product, index) => new { product, index }))
         {
-            <partial name="_ProductView" model="item" />
+            <div class="product-item" data-price="@item.product.Price" data-index="@item.index">
+                <partial name="_ProductView" model="item.product" />
+            </div>
         }
     </div>
 </div>
+@section Scripts {
+    <script>
+        function sortProducts() {
+            const sortOption = document.getElementById('sortOptions').value;
+            const productContainer = document.getElementById('productContainer');
+            const products = Array.from(productContainer.getElementsByClassName('product-item')); // Ürün öğelerini al
+
+            // Sıralama işlemi
+            if (sortOption === 'asc') {
+                products.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+            } else if (sortOption === 'desc') {
+                products.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+            } else {
+                // Varsayılan sıralama
+                products.sort((a, b) => parseInt(a.dataset.index) - parseInt(b.dataset.index));
+            }
+
+            // Yeni sıralamayı DOM'a uygula
+            productContainer.innerHTML = '';
+            products.forEach(product => productContainer.appendChild(product));
+        }
+    </script>
+}
